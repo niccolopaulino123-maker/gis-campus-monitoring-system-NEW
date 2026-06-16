@@ -1,0 +1,156 @@
+@import 'tailwindcss';
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  font-family: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  background: #f1f5f9;
+  color: #0f172a;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Tighter, calmer headings for a minimal type scale. */
+h1,
+h2,
+h3 {
+  letter-spacing: -0.01em;
+}
+
+/* Selection accent matches the emerald brand. */
+::selection {
+  background: #a7f3d0;
+  color: #064e3b;
+}
+
+/* Thin, unobtrusive scrollbars. */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 transparent;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Tailwind v4 defaults buttons to cursor:default — restore the pointer. */
+button:not(:disabled),
+[role='button'],
+select,
+summary {
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+}
+
+/* Leaflet sits below modals/sidebar UI. */
+.leaflet-container {
+  background: #eef2f7;
+  font: inherit;
+}
+
+/* Room name labels drawn on the vector floor plan (no tooltip box/arrow). */
+.room-label.leaflet-tooltip {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+  margin: 0;
+  color: #334155;
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1.1;
+  text-align: center;
+  white-space: normal;
+  pointer-events: none;
+}
+
+.room-label.leaflet-tooltip::before {
+  display: none;
+}
+
+/* Warning-triangle issue marker. */
+.issue-marker {
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.45));
+  transform-origin: 50% 78%;
+  transform-box: fill-box;
+}
+
+/* Pending: shake + pulse + red glow so warnings are hard to miss. */
+.issue-marker.status-open {
+  animation: issue-attention 1.6s ease-in-out infinite;
+}
+
+/* In-progress: a calmer breathing pulse. */
+.issue-marker.status-in_progress {
+  animation: issue-pulse 2.4s ease-in-out infinite;
+}
+
+.issue-marker.status-resolved {
+  opacity: 0.55;
+}
+
+@keyframes issue-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.12);
+  }
+}
+
+@keyframes issue-attention {
+  0%,
+  60%,
+  100% {
+    transform: scale(1) rotate(0deg);
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.45));
+  }
+  10% {
+    transform: scale(1.22) rotate(-8deg);
+  }
+  20% {
+    transform: scale(1.22) rotate(8deg);
+  }
+  30% {
+    transform: scale(1.22) rotate(-6deg);
+  }
+  40% {
+    transform: scale(1.22) rotate(6deg);
+  }
+  50% {
+    transform: scale(1.22) rotate(0deg);
+    filter: drop-shadow(0 0 7px rgba(220, 38, 38, 0.95))
+      drop-shadow(0 1px 2px rgba(0, 0, 0, 0.45));
+  }
+}
+
+/* Respect users who prefer reduced motion. */
+@media (prefers-reduced-motion: reduce) {
+  .issue-marker.status-open,
+  .issue-marker.status-in_progress {
+    animation: none;
+  }
+}

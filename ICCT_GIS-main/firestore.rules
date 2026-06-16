@@ -1,0 +1,24 @@
+rules_version = '2';
+
+// Security rules for the Campus Environmental Monitoring System.
+// Only authenticated (authorized) users may read or write environmental reports.
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /issues/{issueId} {
+      allow read, write: if request.auth != null;
+    }
+
+    // User profiles (name, photo, role, year/section). Authenticated users may
+    // read; only admins (role custom claim) may create/update/delete.
+    match /users/{userId} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null
+        && request.auth.token.role == 'admin';
+      // A user may update their own profile (e.g. year/section) but must not
+      // change their own role — role escalation stays admin-only.
+      allow update: if request.auth != null
+        && request.auth.uid == userId
+        && request.resource.data.role == resource.data.role;
+    }
+  }
+}
